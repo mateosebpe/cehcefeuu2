@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <script src="bootstrap/bootstrap.bundle.min.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container"><button type="submit" onclick="deslogueo()">Salir</button>
+        <div class="row d-flex justify-content-center pt-5">
+            <h1 class="mb-4 text-center">Gestor de contenido del sitio</h1>
+            <form id="loginForm" class="col-md-6">
+                <div class="card me-2 p-4">
+                    <h3>Inicio de sesión</h3>
+                    <input type="email" id="emailInput" placeholder="Correo electrónico" required>
+                    <input type="password" id="passwordInput" placeholder="Contraseña" required>
+                    <button type="submit">Iniciar sesión</button>
+                </div>
+            </form>
+
+            <form id="uploadForm" enctype="multipart/form-data" class="col-md-6 ">
+                <div class="card me-2 p-4">
+                    <h3>Agregar actas</h3>
+                    <input type="file" id="fileInput" accept=".pdf" required>
+                    <select name="" id="fileCategory">
+                        <option value="pdfs/asambleageneral/">Asamblea General</option>
+                        <option value="pdfs/mesacoordinadora/">Mesa Coordinadora</option>
+                        <option value="pdfs/actasyarchivos/">Actas y archivos</option>
+                        <option value="pdfs/asuntosgremiales/">Asuntos gremiales</option>
+                        <option value="pdfs/cogobierno">Cogobierno</option>
+                        <option value="pdfs/cultura/">Cultura</option>
+                        <option value="pdfs/derechoshumanos/">Derechos humanos</option>
+                        <option value="pdfs/extension/">Extensión</option>
+                        <option value="pdfs/finanzas/">Finanzas</option>
+                        <option value="pdfs/organizacion/">Organización</option>
+                        <option value="pdfs/prensaypropaganda/">Prensa y propaganda</option>
+                    </select>
+                    <button type="button" onclick="uploadFile()">Guardar</button>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-md-12 card p-4 my-4">
+                <h3 class="text-center">Ver y editar actas</h3>
+                <form>
+                    <select name="" id="downloadCategory">
+                        <option value="pdfs/asambleageneral/">Asamblea General</option>
+                        <option value="pdfs/mesacoordinadora/">Mesa Coordinadora</option>
+                        <option value="pdfs/actasyarchivos/">Actas y archivos</option>
+                        <option value="pdfs/asuntosgremiales/">Asuntos gremiales</option>
+                        <option value="pdfs/cogobierno">Cogobierno</option>
+                        <option value="pdfs/cultura/">Cultura</option>
+                        <option value="pdfs/derechoshumanos/">Derechos humanos</option>
+                        <option value="pdfs/extension/">Extensión</option>
+                        <option value="pdfs/finanzas/">Finanzas</option>
+                        <option value="pdfs/organizacion/">Organización</option>
+                        <option value="pdfs/prensaypropaganda/">Prensa y propaganda</option>
+                    </select>
+                    <button type="button" onclick="renderFiles()">Refrescar</button>
+                </form>
+                <div id="viewFiles" class="list-group mt-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="module">
+        const firebaseConfig = {
+            apiKey: "AIzaSyDugg88XG48Y7DzQjFzEaFMhWsPMC65XCw",
+            authDomain: "cehce-e8791.firebaseapp.com",
+            projectId: "cehce-e8791",
+            storageBucket: "cehce-e8791.appspot.com",
+            messagingSenderId: "640631750690",
+            appId: "1:640631750690:web:2fc5582b10c8ef84a5ca7b",
+            measurementId: "G-HNFDQJJ50N"
+        };
+
+        var app = firebase.initializeApp(firebaseConfig);
+
+        // Obtén una referencia al servicio de autenticación de Firebase
+        const auth = firebase.auth();
+        
+        // Obtén el formulario de inicio de sesión
+
+
+        
+
+        const loginForm = document.getElementById('loginForm');
+        // Agrega un listener para el evento submit del formulario
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Evita que el formulario se envíe por defecto
+
+            function checkLoggedInUser() {
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        console.log('Usuario logeado:', user);
+                        loginForm.innerHTML = '<p>Has iniciado sesión ' + user.email + '</p>' ;
+                    } else {
+                        console.log('Ningún usuario logeado');
+                    }
+                });
+            }
+           
+
+            // Obtiene los valores de los campos de correo electrónico y contraseña
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            // Inicia sesión con el correo electrónico y contraseña proporcionados
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // El inicio de sesión fue exitoso
+                    const user = userCredential.user;
+                    console.log('Inicio de sesión exitoso:', user);
+                    checkLoggedInUser()
+                    // Realiza aquí las acciones correspondientes después del inicio de sesión exitoso
+                })
+                .catch((error) => {
+                    // Hubo un error en el inicio de sesión
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log('Error en el inicio de sesión:', errorCode, errorMessage);
+                    // Realiza aquí las acciones correspondientes al error de inicio de sesión
+                });
+        });
+
+    </script>
+    <script src="public/scripts/storageSubir.js"></script>
+    <script src="public/scripts/storageBajar.js"></script>
+    <script src="public/scripts/deleteFile.js"></script>
+</body>
+
+</html>

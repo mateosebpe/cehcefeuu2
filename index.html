@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEHCE - ASCEEP - FEUU</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <script src="bootstrap/bootstrap.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #d3261c;
+            --secondary-color: #2e2660;
+        }
+
+        .card>img {
+            object-fit: cover;
+            object-position: middle;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+    </style>
+        <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+        <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+        <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="public/img/lgyc.png" height="100" alt="" style="mix-blend-mode: multiply;">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://linktr.ee/cehcefeuu">Redes sociales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#organismos">Organismos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="jumbotron text-center py-5 container">
+        <h1 class="display-4">Sitio web en construcción</h1>
+        <p class="lead">Hay muchos elementos provisorios y/o con errores.</p>
+        <a href="https://linktr.ee/cehcefeuu" class="btn btn-primary">Ver redes sociales</a>
+    </section>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Lista de Archivos PDF</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="fileList" class="list-group">
+                        <!-- List of PDF files will be dynamically inserted here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <section id="instagram-feed" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">El CEHCE en Instagram</h2>
+            <div class="row" id="instagram-feed-container">
+
+                <div class="col-md-12">
+                    <script src="https://snapwidget.com/js/snapwidget.js"></script>
+                    <iframe src="https://snapwidget.com/embed/1034504" class="snapwidget-widget"
+                        allowtransparency="true" frameborder="0" scrolling="no"
+                        style="border:none; overflow:hidden;  width:100%; "></iframe>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- organismos Section -->
+    <section id="organismos" class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Organismos</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Asamblea general</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <!-- Button to Open Modal -->
+                            <button type="button" onclick="loadModal('pdfs/asambleageneral/')"
+                                class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                Ver los documentos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Mesa Coordinadora</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <button type="button" onclick="loadModal('public/json/asambleageneral.json')"
+                                class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                Ver los documentos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="text-center mb-4">Comisiones</h2>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Asuntos gremiales</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <button type="button" onclick="loadModal('public/json/asambleageneral.json')"
+                                class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                Ver los documentos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Organización</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <button type="button" onclick="loadModal('public/json/asambleageneral.json')"
+                                class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                Ver los documentos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Cultura</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <button type="button" onclick="loadModal('public/json/asambleageneral.json')"
+                                class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                Ver los documentos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Contactanos</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Your Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <h5>Información de contacto</h5>
+                    <p>Phone: 123-456-7890</p>
+                    <p>Email: info@example.com</p>
+                    <p>Av. Uruguay 1695, Montevideo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-3">
+        <p>&copy; 2023 CEHCE. All rights reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="module">
+        const firebaseConfig = {
+            apiKey: "AIzaSyDugg88XG48Y7DzQjFzEaFMhWsPMC65XCw",
+            authDomain: "cehce-e8791.firebaseapp.com",
+            projectId: "cehce-e8791",
+            storageBucket: "cehce-e8791.appspot.com",
+            messagingSenderId: "640631750690",
+            appId: "1:640631750690:web:2fc5582b10c8ef84a5ca7b",
+            measurementId: "G-HNFDQJJ50N"
+        };
+
+        var app = firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- JavaScript -->
+    <script src="public/scripts/modal.js"></script>
+
+</body>
+
+</html>
